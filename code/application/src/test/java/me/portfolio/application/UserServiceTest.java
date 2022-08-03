@@ -9,9 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static reactor.core.publisher.Mono.when;
+
 
 @SpringBootTest
 public class UserServiceTest {
@@ -23,12 +22,12 @@ public class UserServiceTest {
     @Test
     public void newUserTest() throws InterruptedException {
         User user = userService.newUser();
-        assertThat(user).isEqualTo(userDAO.findById(user.getId()).block());
+        assertThat(user).isEqualTo(userDAO.findById(user.getId()).get());
         assertThat(user.getStatus()).isEqualTo(UserStatusEnum.ONLINE);
         assertThat(MatchingQueue.PEEK()).isEqualTo(user.getId());
         Thread.sleep(6000);
         assertThat(MatchingQueue.PEEK()).isNull();
-        assertThat(userDAO.findById(user.getId()).block().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
+        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
 
     }
 

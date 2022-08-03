@@ -4,7 +4,9 @@ package me.portfolio.library.entity;
 import me.portfolio.library.service.PieceStrategy;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Piece {
     @Id
     private String id;

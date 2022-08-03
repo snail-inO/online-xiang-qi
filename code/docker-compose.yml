@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  xiang-qi:
+    image: online-xiang-qi
+    ports:
+      - 80:8080
+
+  mongo-db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - xiang-qi-db:/data
+
+volumes:
+  xiang-qi-db:

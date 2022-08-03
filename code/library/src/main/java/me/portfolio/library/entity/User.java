@@ -3,11 +3,13 @@ package me.portfolio.library.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Timer;
 
+@Document
 public class User {
     @Id
     private String id;
