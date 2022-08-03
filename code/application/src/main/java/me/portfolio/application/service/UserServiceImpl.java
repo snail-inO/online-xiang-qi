@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setStatus(UserStatusEnum.ONLINE);
         user.setLastOnlineTime(new Date());
-        user = userDAO.save(user);
+        user = userDAO.save(user).block();
 
         Timer timer = new Timer();
         timer.schedule(new SetUserOfflineTask(user.getId()), 5000);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             MatchingQueue.REMOVE(uid);
 
 
-            User user = userDAO.findById(uid).get();
+            User user = userDAO.findById(uid).block();
             user.setStatus(UserStatusEnum.OFFLINE);
             userDAO.save(user);
 

@@ -15,13 +15,14 @@
     <description>xiang-qi</description>
     <packaging>pom</packaging>
     <properties>
-        <java.version>18</java.version>
+        <java.version>8</java.version>
     </properties>
 
     <modules>
         <module>library</module>
         <module>application</module>
     </modules>
+
 
     <dependencies>
         <dependency>
@@ -56,5 +57,14 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

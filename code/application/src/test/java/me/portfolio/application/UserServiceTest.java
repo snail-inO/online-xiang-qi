@@ -23,12 +23,12 @@ public class UserServiceTest {
     @Test
     public void newUserTest() throws InterruptedException {
         User user = userService.newUser();
-        assertThat(user).isEqualTo(userDAO.findById(user.getId()).get());
+        assertThat(user).isEqualTo(userDAO.findById(user.getId()).block());
         assertThat(user.getStatus()).isEqualTo(UserStatusEnum.ONLINE);
         assertThat(MatchingQueue.PEEK()).isEqualTo(user.getId());
         Thread.sleep(6000);
         assertThat(MatchingQueue.PEEK()).isNull();
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
+        assertThat(userDAO.findById(user.getId()).block().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
 
     }
 
