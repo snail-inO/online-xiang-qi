@@ -1,0 +1,16 @@
+@startuml usecase1
+
+"Frontend" as fe
+usecase "Send start request" as uc1
+usecase "Get uid" as uc2
+usecase "Register uid int matching queue" as uc3
+usecase "Send register response" as uc4
+
+fe --> uc1
+uc1 --> uc2
+uc2 --> uc3
+uc3 --> uc4
+uc4 --> fe
+
+
+@endmul
