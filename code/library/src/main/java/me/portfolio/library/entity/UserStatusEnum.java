@@ -1,6 +1,8 @@
 package me.portfolio.library.entity;
 
 public enum UserStatusEnum {
+    OFFLINE,
     ONLINE,
-    OFFLINE
+    MATCHING,
+    GAMING
 }

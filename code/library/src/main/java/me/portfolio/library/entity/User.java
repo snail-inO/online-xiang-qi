@@ -2,12 +2,10 @@ package me.portfolio.library.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Timer;
 
 @Document
 public class User {
@@ -83,7 +81,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
         return totalGames == user.totalGames && wins == user.wins && id.equals(user.id) && Objects.equals(name, user.name) && status == user.status && Objects.equals(lastOnlineTime, user.lastOnlineTime);
     }
