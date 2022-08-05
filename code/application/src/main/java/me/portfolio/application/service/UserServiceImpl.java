@@ -7,6 +7,7 @@ import me.portfolio.library.entity.UserStatusEnum;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.MatchingQueue;
+import me.portfolio.log.aop.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
         this.userDAO = userDAO;
     }
 
-
+    @Logging
     @Override
     public User setUserStatus(final User user) {
         User entity = userDAO.findById(user.getId()).orElseThrow(() -> new EntityNotFoundException(User.class, user.getId()));

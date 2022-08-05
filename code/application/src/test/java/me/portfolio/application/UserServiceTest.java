@@ -95,6 +95,15 @@ public class UserServiceTest {
         Thread.sleep(1100);
         assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
         assertThat(queue.peek()).isNull();
+
+        user = new User();
+        user.setName("abc");
+        user.setStatus(UserStatusEnum.OFFLINE);
+        user = userDAO.save(user);
+        assertThat(user.getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
+        user.setStatus(UserStatusEnum.ONLINE);
+        user = userService.setUserStatus(user);
+        assertThat(user.getStatus()).isEqualTo(UserStatusEnum.ONLINE);
     }
 
 }

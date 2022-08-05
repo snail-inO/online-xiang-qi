@@ -90,4 +90,16 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, name, status, lastOnlineTime, totalGames, wins);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", lastOnlineTime=" + lastOnlineTime +
+                ", totalGames=" + totalGames +
+                ", wins=" + wins +
+                '}';
+    }
 }

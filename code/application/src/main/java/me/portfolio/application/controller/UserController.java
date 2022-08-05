@@ -7,6 +7,7 @@ import me.portfolio.application.service.UserServiceImpl;
 import me.portfolio.library.entity.User;
 import me.portfolio.library.entity.UserStatusEnum;
 import me.portfolio.library.exceptions.EntityNotFoundException;
+import me.portfolio.log.aop.Logging;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -56,6 +57,7 @@ public class UserController {
                 .body(entityModel);
     }
 
+    @Logging
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         user.setStatus(UserStatusEnum.OFFLINE);

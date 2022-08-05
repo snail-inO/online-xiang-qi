@@ -3,6 +3,7 @@ WORKDIR /workspace/xiang-qi
 
 RUN mkdir application
 RUN mkdir library
+RUN mkdir log
 
 COPY pom.xml .
 COPY mvnw .
@@ -12,6 +13,8 @@ COPY application/pom.xml ./application/
 COPY application/src ./application/src
 COPY library/pom.xml ./library/
 COPY library/src ./library/src
+COPY log/pom.xml ./log/
+COPY log/src ./log/src
 
 RUN ./mvnw install -DskipTests
 RUN mkdir -p application/target/dependency && (cd application/target/dependency; jar -xf ../*.jar)

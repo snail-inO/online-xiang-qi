@@ -9,30 +9,17 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>me.portfolio</groupId>
-    <artifactId>xiang-qi</artifactId>
+    <artifactId>log</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>xiang-qi</name>
-    <description>xiang-qi</description>
-    <packaging>pom</packaging>
+    <name>log</name>
+    <description>log</description>
     <properties>
-        <java.version>8</java.version>
+        <java.version>18</java.version>
     </properties>
-
-    <modules>
-        <module>library</module>
-        <module>application</module>
-        <module>log</module>
-    </modules>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -45,28 +32,9 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
