@@ -3,6 +3,7 @@ package me.portfolio.application.assembler;
 import me.portfolio.application.controller.UserController;
 
 import me.portfolio.library.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -15,10 +16,8 @@ public class UserModelAssembler implements RepresentationModelAssembler<User, En
 
     @Override
     public EntityModel<User> toModel(User user) {
-        EntityModel<User> userModel = EntityModel.of(user,
+        return EntityModel.of(user,
                 linkTo(methodOn(UserController.class).retrieveUser(user.getId())).withSelfRel(),
-                linkTo(methodOn(UserController.class).retrieveUsers()).withRel("users"));
-
-        return userModel;
+                linkTo(methodOn(UserController.class).retrieveUsers(Pageable.unpaged())).withRel("users"));
     }
 }

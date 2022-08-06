@@ -14,7 +14,7 @@
     <bytecodeTargetLevel>
       <module name="application" target="1.8" />
       <module name="library" target="1.8" />
-      <module name="log" target="18" />
+      <module name="log" target="1.8" />
       <module name="xiang-qi" target="1.8" />
     </bytecodeTargetLevel>
   </component>

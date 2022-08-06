@@ -63,6 +63,12 @@ public class UserServiceImpl implements UserService {
                 LOGGER.info("User offline time: " + OFFLINE_TIME);
                 entity = enqueue(entity);
                 break;
+            case GAMING:
+                if (entity.getStatus() != UserStatusEnum.MATCHING)
+                    throw new InvalidOperationException(User.class, entity.getId());
+                entity.setStatus(UserStatusEnum.GAMING);
+                entity.setTotalGames(entity.getTotalGames() + 1);
+                break;
         }
 
         return userDAO.save(entity);

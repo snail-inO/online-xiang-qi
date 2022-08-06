@@ -1,24 +1,28 @@
 package me.portfolio.library.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
 import java.util.Map;
 
-@Document
+@Document("games")
 public class Game {
     @Id
     private String id;
     private GameStatusEnum status;
-    private Map<User, PieceColorEnum> users;
-    private List<Board> boards;
+    private long totalSteps;
+    @Reference(to = User.class)
+    private Map<PieceColorEnum, User> users;
+    @Reference(to = Board.class)
+    private Map<String, Board> boards;
 
-    public Game(String id, GameStatusEnum status, Map<User, PieceColorEnum> users, List<Board> boards) {
+    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, Map<String, Board> boards) {
         this.id = id;
         this.status = status;
-        this.users = users;
+        this.totalSteps = totalSteps;
         this.boards = boards;
+        this.users = users;
     }
 
     public Game() {
@@ -40,19 +44,37 @@ public class Game {
         this.status = status;
     }
 
-    public Map<User, PieceColorEnum> getUsers() {
+    public long getTotalSteps() {
+        return totalSteps;
+    }
+
+    public void setTotalSteps(long totalSteps) {
+        this.totalSteps = totalSteps;
+    }
+
+    public Map<PieceColorEnum, User> getUsers() {
         return users;
     }
 
-    public void setUsers(Map<User, PieceColorEnum> users) {
+    public void setUsers(Map<PieceColorEnum, User> users) {
         this.users = users;
     }
 
-    public List<Board> getBoards() {
+    public Map<String, Board> getBoards() {
         return boards;
     }
 
-    public void setBoards(List<Board> boards) {
+    public void setBoards(Map<String, Board> boards) {
         this.boards = boards;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id='" + id + '\'' +
+                ", status=" + status +
+                ", users=" + users +
+                ", boards=" + boards +
+                '}';
     }
 }

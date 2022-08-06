@@ -1,15 +1,19 @@
 package me.portfolio.library.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
-@Document
+@Document("boards")
 public class Board {
     @Id
     private String id;
     private long step;
+    @Reference(to = Piece.class)
     private Map<String, Piece> pieces;
 
     public Board() {
@@ -43,5 +47,14 @@ public class Board {
 
     public void setPieces(Map<String, Piece> pieces) {
         this.pieces = pieces;
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "id='" + id + '\'' +
+                ", step=" + step +
+                ", pieces=" + pieces +
+                '}';
     }
 }
