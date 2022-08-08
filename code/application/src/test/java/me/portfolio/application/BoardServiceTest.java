@@ -1,12 +1,11 @@
 package me.portfolio.application;
 
-import me.portfolio.application.DAO.BoardDAO;
 import me.portfolio.application.service.BoardServiceImpl;
 import me.portfolio.application.service.PieceServiceImpl;
-import me.portfolio.library.entity.PieceTypeEnum;
+import me.portfolio.library.entity.Board;
+import me.portfolio.library.entity.Game;
+import me.portfolio.library.util.PieceTypeEnum;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,11 +31,11 @@ public class BoardServiceTest {
     @Test
     public void initBoardTest() {
         List<PieceTypeEnum> types = new ArrayList<>();
-        when(pieceService.initPiece(any(PieceTypeEnum.class))).thenAnswer(invocationOnMock -> {
-            types.add(invocationOnMock.getArgument(0));
+        when(pieceService.initPiece(any(Board.class), any(PieceTypeEnum.class))).thenAnswer(invocationOnMock -> {
+            types.add(invocationOnMock.getArgument(1));
             return new HashMap<>();
         });
-        boardService.initBoard();
+        boardService.initBoard(new Game());
         assertThat(types).containsExactlyElementsOf(Arrays.stream(PieceTypeEnum.values()).collect(Collectors.toList()));
     }
 }

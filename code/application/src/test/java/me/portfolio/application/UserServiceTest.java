@@ -2,7 +2,7 @@ package me.portfolio.application;
 
 import me.portfolio.application.DAO.UserDAO;
 import me.portfolio.library.entity.User;
-import me.portfolio.library.entity.UserStatusEnum;
+import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.application.service.UserServiceImpl;
 import me.portfolio.library.util.MatchingQueue;
 import org.junit.jupiter.api.Assertions;

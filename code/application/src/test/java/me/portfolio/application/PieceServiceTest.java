@@ -2,8 +2,9 @@ package me.portfolio.application;
 
 import me.portfolio.application.DAO.PieceDAO;
 import me.portfolio.application.service.PieceServiceImpl;
+import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
-import me.portfolio.library.entity.PieceTypeEnum;
+import me.portfolio.library.util.PieceTypeEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,23 +27,23 @@ public class PieceServiceTest {
 
     @Test
     public void initPieceTest() {
-        Map<String, Piece> pieceMap = pieceService.initPiece(PieceTypeEnum.ZU);
+        Map<Integer, Piece> pieceMap = pieceService.initPiece(new Board(), PieceTypeEnum.ZU);
         assertThat(pieceMap).hasSize(10);
         assertThat(pieceMap.values()).allMatch(piece -> piece.getType() == PieceTypeEnum.ZU);
-        Map<String, Piece> finalPieceMap = pieceMap;
-        Assertions.assertDoesNotThrow( () -> finalPieceMap.keySet().stream().map(key -> pieceDAO.findById(key)));
+        Map<Integer, Piece> finalPieceMap = pieceMap;
+        Assertions.assertDoesNotThrow( () -> finalPieceMap.values().stream().map(value -> pieceDAO.findById(value.getId())));
 
-        pieceMap = pieceService.initPiece(PieceTypeEnum.SHUAI);
+        pieceMap = pieceService.initPiece(new Board(), PieceTypeEnum.SHUAI);
         assertThat(pieceMap).hasSize(2);
         assertThat(pieceMap.values()).allMatch(piece -> piece.getType() == PieceTypeEnum.SHUAI);
-        Map<String, Piece> finalPieceMap1 = pieceMap;
-        Assertions.assertDoesNotThrow( () -> finalPieceMap1.keySet().stream().map(key -> pieceDAO.findById(key)));
+        Map<Integer, Piece> finalPieceMap1 = pieceMap;
+        Assertions.assertDoesNotThrow( () -> finalPieceMap1.values().stream().map(value -> pieceDAO.findById(value.getId())));
 
 
-        pieceMap = pieceService.initPiece(PieceTypeEnum.MA);
+        pieceMap = pieceService.initPiece(new Board(), PieceTypeEnum.MA);
         assertThat(pieceMap).hasSize(4);
         assertThat(pieceMap.values()).allMatch(piece -> piece.getType() == PieceTypeEnum.MA);
-        Map<String, Piece> finalPieceMap2 = pieceMap;
-        Assertions.assertDoesNotThrow( () -> finalPieceMap2.keySet().stream().map(key -> pieceDAO.findById(key)));
+        Map<Integer, Piece> finalPieceMap2 = pieceMap;
+        Assertions.assertDoesNotThrow( () -> finalPieceMap2.values().stream().map(value -> pieceDAO.findById(value.getId())));
     }
 }

@@ -1,6 +1,6 @@
 package me.portfolio.library.service;
 
-import me.portfolio.library.entity.PieceTypeEnum;
+import me.portfolio.library.util.PieceTypeEnum;
 import org.springframework.stereotype.Service;
 
 @Service

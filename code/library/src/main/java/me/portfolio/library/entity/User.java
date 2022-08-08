@@ -1,8 +1,13 @@
 package me.portfolio.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import me.portfolio.library.util.UserStatusEnum;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.NonNull;
 
 import java.util.Date;
 import java.util.Objects;
@@ -11,21 +16,28 @@ import java.util.Objects;
 public class User {
     @Id
     private String id;
+    @NonNull
+    @Indexed(unique = true)
     private String name;
     private UserStatusEnum status;
+    @JsonIgnore
     @LastModifiedDate
     private Date lastOnlineTime;
+    @JsonIgnore
+    @CreatedDate
+    private Date createDate;
     private long totalGames;
     private long wins;
 
     public User() {
     }
 
-    public User(String id, String name, UserStatusEnum status, Date lastOnlineTime, long totalGames, long wins) {
+    public User(String id, String name, UserStatusEnum status, Date lastOnlineTime, Date createDate, long totalGames, long wins) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.lastOnlineTime = lastOnlineTime;
+        this.createDate = createDate;
         this.totalGames = totalGames;
         this.wins = wins;
     }
@@ -60,6 +72,14 @@ public class User {
 
     public void setLastOnlineTime(Date lastOnlineTime) {
         this.lastOnlineTime = lastOnlineTime;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public long getTotalGames() {

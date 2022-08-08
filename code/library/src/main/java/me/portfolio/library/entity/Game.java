@@ -1,9 +1,17 @@
 package me.portfolio.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import me.portfolio.library.util.GameStatusEnum;
+import me.portfolio.library.util.PieceColorEnum;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Document("games")
@@ -15,9 +23,15 @@ public class Game {
     @Reference(to = User.class)
     private Map<PieceColorEnum, User> users;
     @Reference(to = Board.class)
-    private Map<String, Board> boards;
+    private List<Board> boards;
+    @JsonIgnore
+    @LastModifiedDate
+    private Date lastModifiedDate;
+    @JsonIgnore
+    @CreatedDate
+    private Date createDate;
 
-    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, Map<String, Board> boards) {
+    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards) {
         this.id = id;
         this.status = status;
         this.totalSteps = totalSteps;
@@ -60,12 +74,28 @@ public class Game {
         this.users = users;
     }
 
-    public Map<String, Board> getBoards() {
+    public List<Board> getBoards() {
         return boards;
     }
 
-    public void setBoards(Map<String, Board> boards) {
+    public void setBoards(List<Board> boards) {
         this.boards = boards;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     @Override

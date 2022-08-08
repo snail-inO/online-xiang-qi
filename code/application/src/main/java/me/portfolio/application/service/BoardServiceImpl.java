@@ -2,8 +2,9 @@ package me.portfolio.application.service;
 
 import me.portfolio.application.DAO.BoardDAO;
 import me.portfolio.library.entity.Board;
+import me.portfolio.library.entity.Game;
 import me.portfolio.library.entity.Piece;
-import me.portfolio.library.entity.PieceTypeEnum;
+import me.portfolio.library.util.PieceTypeEnum;
 import me.portfolio.log.aop.Logging;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Logging
     @Override
-    public Board initBoard() {
-        Map<String, Piece> pieceMap = new HashMap<>();
-        Arrays.stream(PieceTypeEnum.values()).sequential().forEach(pieceType -> {
-            pieceMap.putAll(pieceService.initPiece(pieceType));
-        });
+    public Board initBoard(Game game) {
+        Map<Integer, Piece> pieceMap = new HashMap<>();
+        Board initBoard = new Board();
+        initBoard = boardDAO.save(initBoard);
+        try {
+            Board finalInitBoard = initBoard;
+            Arrays.stream(PieceTypeEnum.values()).sequential().forEach(pieceType -> {
+                pieceMap.putAll(pieceService.initPiece(finalInitBoard, pieceType));
+            });
+        } catch (Exception e) {
+            boardDAO.delete(initBoard);
+            throw e;
+        }
 
-        return boardDAO.save(new Board(null, 0L, pieceMap));
+        return boardDAO.save(new Board(initBoard.getId(), 0L, pieceMap, game));
     }
 
 }

@@ -2,8 +2,9 @@ package me.portfolio.application.service;
 
 
 import me.portfolio.application.DAO.UserDAO;
+import me.portfolio.application.websocket.EntityEvent;
 import me.portfolio.library.entity.User;
-import me.portfolio.library.entity.UserStatusEnum;
+import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.MatchingQueue;
@@ -11,6 +12,7 @@ import me.portfolio.log.aop.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,9 +24,11 @@ public class UserServiceImpl implements UserService {
     @Value("${user.offline_time}")
     private Long OFFLINE_TIME;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private UserDAO userDAO;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(ApplicationEventPublisher applicationEventPublisher, UserDAO userDAO) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.userDAO = userDAO;
     }
 
@@ -71,7 +75,8 @@ public class UserServiceImpl implements UserService {
                 break;
         }
 
-        return userDAO.save(entity);
+        entity = userDAO.save(entity);
+        return entity;
     }
 
     class SetUserOfflineTask extends java.util.TimerTask {
@@ -114,5 +119,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    private void publishSetUserStatusEvent(final User user) {
+        EntityEvent entityEvent = new EntityEvent(this, user);
+        applicationEventPublisher.publishEvent(entityEvent);
     }
 }

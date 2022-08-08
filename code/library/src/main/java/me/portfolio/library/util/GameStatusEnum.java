@@ -1,4 +1,4 @@
-package me.portfolio.library.entity;
+package me.portfolio.library.util;
 
 public enum GameStatusEnum {
     IN_PROGRESS,

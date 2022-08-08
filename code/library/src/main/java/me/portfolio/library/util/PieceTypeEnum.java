@@ -1,4 +1,4 @@
-package me.portfolio.library.entity;
+package me.portfolio.library.util;
 
 public enum PieceTypeEnum {
     SHUAI(0, 4),
@@ -7,7 +7,7 @@ public enum PieceTypeEnum {
     MA(0, 1),
     JU(0, 0),
     PAO(2, 1),
-    ZU(3, 0);
+    BING(3, 0);
 
     private final int initRow;
     private final int initCol;

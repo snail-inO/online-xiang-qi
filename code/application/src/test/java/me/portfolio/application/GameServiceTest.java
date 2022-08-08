@@ -3,6 +3,8 @@ package me.portfolio.application;
 import me.portfolio.application.service.BoardServiceImpl;
 import me.portfolio.application.service.GameServiceImpl;
 import me.portfolio.library.entity.*;
+import me.portfolio.library.util.GameStatusEnum;
+import me.portfolio.library.util.PieceColorEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -29,7 +32,7 @@ public class GameServiceTest {
 
     @Test
     public void initGameTest() {
-        when(boardService.initBoard()).thenReturn(new Board());
+        when(boardService.initBoard(any(Game.class))).thenReturn(new Board());
         List<User> users = new ArrayList<>();
         User user = new User();
         user.setId("1");
