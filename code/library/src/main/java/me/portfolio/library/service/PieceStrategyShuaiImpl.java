@@ -22,7 +22,7 @@ public class PieceStrategyShuaiImpl extends GeneralPieceStrategyImpl{
             int max = Math.max(colAbs, rowAbs);
             if(min == PieceTypeEnum.SHUAI.getMin() && max == PieceTypeEnum.SHUAI.getMin()) return true;
             return false;
-        } else if (curCol == preCol
+        } else if (curCol == preCol && board.getPieces().containsKey(9 * curRow + curCol - 1)
                 && board.getPieces().get(9 * curRow + curCol - 1).getType() == PieceTypeEnum.SHUAI) {
             int min = Math.min(preRow, curRow);
             int max = Math.max(preRow, curRow);

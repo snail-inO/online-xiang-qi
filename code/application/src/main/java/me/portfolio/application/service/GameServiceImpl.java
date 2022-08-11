@@ -4,6 +4,7 @@ import me.portfolio.application.DAO.GameDAO;
 import me.portfolio.application.websocket.EntityEvent;
 import me.portfolio.library.entity.*;
 import me.portfolio.library.util.GameStatusEnum;
+import me.portfolio.library.util.GetPieceIndex;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.log.aop.Logging;
 import org.springframework.context.ApplicationEventPublisher;
@@ -26,7 +27,6 @@ public class GameServiceImpl implements GameService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Logging
     @Override
     public Game initGame(Collection<User> users) {
         AtomicInteger random = new AtomicInteger((int) Math.round(Math.random()));
@@ -46,11 +46,23 @@ public class GameServiceImpl implements GameService {
         }
 
         game = gameDAO.save(game);
-        publishInitGameEvent(game);
+        publishGameEvent(game);
         return game;
     }
 
-    private void publishInitGameEvent(Game game) {
+    @Logging
+    @Override
+    public void updateGame(Board board, Piece prePiece, Piece curPiece) {
+        Game curGame = board.getGame();
+        Board newBoard = boardService.updateBoard(board, prePiece, curPiece);
+
+        curGame.getBoards().add(newBoard);
+        curGame.setTotalSteps(curGame.getTotalSteps() + 1);
+
+        publishGameEvent(gameDAO.save(curGame));
+    }
+
+    private void publishGameEvent(Game game) {
         applicationEventPublisher.publishEvent(new EntityEvent<>(this, game));
     }
 }

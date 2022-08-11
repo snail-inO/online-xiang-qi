@@ -17,10 +17,10 @@ import java.util.Objects;
 public class Piece {
     @Id
     private String id;
-    private final PieceTypeEnum type;
+    private PieceTypeEnum type;
     @Transient
     @JsonIgnore
-    private final PieceStrategy strategy;
+    private PieceStrategy strategy;
     private PieceColorEnum color;
     private int row;
     private int col;
@@ -33,6 +33,10 @@ public class Piece {
     @JsonIgnore
     @CreatedDate
     private Date createDate;
+
+    public Piece() {
+    }
+
     public Piece(PieceTypeEnum type) {
         this.type = type;
         this.strategy = PieceStrategySelector.SELECT_BY_TYPE(type);
@@ -74,6 +78,10 @@ public class Piece {
 
     public PieceStrategy getStrategy() {
         return strategy;
+    }
+
+    public void setStrategy(PieceStrategy strategy) {
+        this.strategy = strategy;
     }
 
     public PieceColorEnum getColor() {

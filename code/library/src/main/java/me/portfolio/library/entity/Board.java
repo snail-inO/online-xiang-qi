@@ -33,6 +33,13 @@ public class Board {
         this.game = game;
     }
 
+    public Board(Board board) {
+        this.id = board.id;
+        this.step = board.step;
+        this.pieces = board.pieces;
+        this.game = board.game;
+    }
+
     public String getId() {
         return id;
     }

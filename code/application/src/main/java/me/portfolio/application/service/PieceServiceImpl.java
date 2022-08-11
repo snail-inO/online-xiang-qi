@@ -41,6 +41,14 @@ public class PieceServiceImpl implements PieceService{
         return pieceMap;
     }
 
+    @Logging
+    @Override
+    public void updatePiece(Piece piece, boolean alive, Board board) {
+        piece.getBoards().add(board);
+        piece.setAlive(alive);
+        pieceDAO.save(piece);
+    }
+
     private Map<Integer, Piece> generatePieces(Board board, PieceTypeEnum type, int step, boolean left) {
         Map<Integer, Piece> pieceMap = new HashMap<>();
         int flag = left? 0 : 1;

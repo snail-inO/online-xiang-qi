@@ -3,6 +3,7 @@ package me.portfolio.library.service;
 import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
 import me.portfolio.library.util.BoundaryEnum;
+import me.portfolio.library.util.GetPieceIndex;
 
 public abstract class GeneralPieceStrategyImpl implements PieceStrategy {
 
@@ -22,7 +23,9 @@ public abstract class GeneralPieceStrategyImpl implements PieceStrategy {
     }
 
     private static boolean SelfPieceCheck(Board board, Piece prePiece, int curCol, int curRow){
-        return board.getPieces().containsKey(9 * curRow + curCol-1) && board.getPieces().get(9 * curRow + curCol-1).getColor().equals(prePiece.getColor());
+        int index = 9 * curRow + curCol-1;
+
+        return board.getPieces().containsKey(index) && board.getPieces().get(index).getColor().equals(prePiece.getColor());
     }
 
     private static Boolean ValidatePieceBoundary(Piece prePiece, int curCol, int curRow) {

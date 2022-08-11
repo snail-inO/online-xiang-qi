@@ -4,6 +4,8 @@ import me.portfolio.application.DAO.BoardDAO;
 import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Game;
 import me.portfolio.library.entity.Piece;
+import me.portfolio.library.exceptions.InvalidOperationException;
+import me.portfolio.library.util.GetPieceIndex;
 import me.portfolio.library.util.PieceTypeEnum;
 import me.portfolio.log.aop.Logging;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,32 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return boardDAO.save(new Board(initBoard.getId(), 0L, pieceMap, game));
+    }
+
+    @Logging
+    @Override
+    public Board updateBoard(Board board, Piece prePiece, Piece curPiece) {
+        Board newBoard = new Board(board);
+        newBoard.setId(null);
+        newBoard = boardDAO.save(newBoard);
+        try {
+            newBoard.getPieces().remove(GetPieceIndex.getIndex(prePiece));
+
+            int newIndex = GetPieceIndex.getIndex(curPiece);
+            if (newBoard.getPieces().containsKey(newIndex)) {
+                Piece removedPiece = newBoard.getPieces().get(newIndex);
+                pieceService.updatePiece(removedPiece, false, newBoard);
+            }
+
+            pieceService.updatePiece(curPiece, true, newBoard);
+            newBoard.getPieces().put(newIndex, curPiece);
+            newBoard.setStep(newBoard.getStep() + 1);
+
+            return boardDAO.save(newBoard);
+        } catch (Exception ex) {
+            boardDAO.deleteById(newBoard.getId());
+            throw new InvalidOperationException(Board.class, board.getId());
+        }
     }
 
 }

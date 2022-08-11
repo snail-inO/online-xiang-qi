@@ -8,4 +8,5 @@ import java.util.Map;
 
 public interface PieceService {
     Map<Integer, Piece> initPiece(Board board, PieceTypeEnum type);
+    void updatePiece(Piece piece, boolean alive, Board board);
 }
