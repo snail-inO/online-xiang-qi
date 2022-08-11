@@ -27,9 +27,9 @@ public class PieceServiceTest {
 
     @Test
     public void initPieceTest() {
-        Map<Integer, Piece> pieceMap = pieceService.initPiece(new Board(), PieceTypeEnum.ZU);
+        Map<Integer, Piece> pieceMap = pieceService.initPiece(new Board(), PieceTypeEnum.BING);
         assertThat(pieceMap).hasSize(10);
-        assertThat(pieceMap.values()).allMatch(piece -> piece.getType() == PieceTypeEnum.ZU);
+        assertThat(pieceMap.values()).allMatch(piece -> piece.getType() == PieceTypeEnum.BING);
         Map<Integer, Piece> finalPieceMap = pieceMap;
         Assertions.assertDoesNotThrow( () -> finalPieceMap.values().stream().map(value -> pieceDAO.findById(value.getId())));
 

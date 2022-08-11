@@ -3,11 +3,11 @@ package me.portfolio.library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.portfolio.library.service.PieceStrategy;
+import me.portfolio.library.service.PieceStrategySelector;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.Objects;
 public class Piece {
     @Id
     private String id;
-    private PieceTypeEnum type;
+    private final PieceTypeEnum type;
     @Transient
     @JsonIgnore
-    private PieceStrategy strategy;
+    private final PieceStrategy strategy;
     private PieceColorEnum color;
     private int row;
     private int col;
@@ -33,13 +33,15 @@ public class Piece {
     @JsonIgnore
     @CreatedDate
     private Date createDate;
-    public Piece() {
+    public Piece(PieceTypeEnum type) {
+        this.type = type;
+        this.strategy = PieceStrategySelector.SELECT_BY_TYPE(type);
     }
 
-    public Piece(String id, PieceTypeEnum type, PieceStrategy strategy, PieceColorEnum color, int row, int col, boolean alive, List<Board> boards) {
+    public Piece(String id, PieceTypeEnum type, PieceColorEnum color, int row, int col, boolean alive, List<Board> boards) {
         this.id = id;
         this.type = type;
-        this.strategy = strategy;
+        this.strategy = PieceStrategySelector.SELECT_BY_TYPE(type);
         this.color = color;
         this.row = row;
         this.col = col;
@@ -70,16 +72,8 @@ public class Piece {
         return type;
     }
 
-    public void setType(PieceTypeEnum type) {
-        this.type = type;
-    }
-
     public PieceStrategy getStrategy() {
         return strategy;
-    }
-
-    public void setStrategy(PieceStrategy strategy) {
-        this.strategy = strategy;
     }
 
     public PieceColorEnum getColor() {

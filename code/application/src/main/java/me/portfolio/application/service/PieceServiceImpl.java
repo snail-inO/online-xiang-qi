@@ -32,7 +32,7 @@ public class PieceServiceImpl implements PieceService{
             pieceMap.putAll(generatePieces(board, type, 0, false));
         }
 
-        if (type == PieceTypeEnum.ZU) {
+        if (type == PieceTypeEnum.BING) {
             pieceMap.putAll(generatePieces(board, type, 2, true));
             pieceMap.putAll(generatePieces(board, type, 2, false));
             pieceMap.putAll(generatePieces(board, type, 4, true));
@@ -45,7 +45,7 @@ public class PieceServiceImpl implements PieceService{
         Map<Integer, Piece> pieceMap = new HashMap<>();
         int flag = left? 0 : 1;
 
-        Piece pieceRL = new Piece(null, type, PieceStrategySelector.SELECT_BY_TYPE(type),
+        Piece pieceRL = new Piece(null, type,
                     PieceColorEnum.RED, type.getInitRow(),
                 BOARD_WIDTH * flag + (left? 1 : -1) * (type.getInitCol() + step) - 1 * flag,  true,
                     Collections.singletonList(board));
