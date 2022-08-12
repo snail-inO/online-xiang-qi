@@ -8,6 +8,8 @@ import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.GetPieceIndex;
 import me.portfolio.library.util.PieceTypeEnum;
 import me.portfolio.log.aop.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService {
     private final BoardDAO boardDAO;
     private final PieceService pieceService;
+    private final static Logger LOGGER = LoggerFactory.getLogger(BoardServiceImpl.class);
     public BoardServiceImpl(BoardDAO boardDAO, PieceService pieceService) {
         this.boardDAO = boardDAO;
         this.pieceService = pieceService;
@@ -42,28 +45,29 @@ public class BoardServiceImpl implements BoardService {
         return boardDAO.save(new Board(initBoard.getId(), 0L, pieceMap, game));
     }
 
-    @Logging
     @Override
     public Board updateBoard(Board board, Piece prePiece, Piece curPiece) {
-        Board newBoard = new Board(board);
-        newBoard.setId(null);
-        newBoard = boardDAO.save(newBoard);
+        LOGGER.info("Update board: {}", board);
+//        Board newBoard = new Board(board);
+//        newBoard.setId(null);
+//        newBoard = boardDAO.save(newBoard);
         try {
-            newBoard.getPieces().remove(GetPieceIndex.getIndex(prePiece));
+            board.getPieces().remove(GetPieceIndex.getIndex(prePiece));
 
             int newIndex = GetPieceIndex.getIndex(curPiece);
-            if (newBoard.getPieces().containsKey(newIndex)) {
-                Piece removedPiece = newBoard.getPieces().get(newIndex);
-                pieceService.updatePiece(removedPiece, false, newBoard);
+            if (board.getPieces().containsKey(newIndex)) {
+                Piece removedPiece = board.getPieces().get(newIndex);
+                pieceService.updatePiece(removedPiece, false, board);
             }
 
-            pieceService.updatePiece(curPiece, true, newBoard);
-            newBoard.getPieces().put(newIndex, curPiece);
-            newBoard.setStep(newBoard.getStep() + 1);
+            pieceService.updatePiece(curPiece, true, board);
+            board.getPieces().remove(GetPieceIndex.getIndex(prePiece));
+            board.getPieces().put(newIndex, curPiece);
+            board.setStep(board.getStep() + 1);
 
-            return boardDAO.save(newBoard);
+            return boardDAO.save(board);
         } catch (Exception ex) {
-            boardDAO.deleteById(newBoard.getId());
+            boardDAO.deleteById(board.getId());
             throw new InvalidOperationException(Board.class, board.getId());
         }
     }

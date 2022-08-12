@@ -88,15 +88,5 @@ public class Board {
         this.createDate = createDate;
     }
 
-    @Override
-    public String toString() {
-        return "Board{" +
-                "id='" + id + '\'' +
-                ", step=" + step +
-                ", pieces=" + pieces +
-                ", game=" + game +
-                ", lastModifiedDate=" + lastModifiedDate +
-                ", createDate=" + createDate +
-                '}';
-    }
+
 }

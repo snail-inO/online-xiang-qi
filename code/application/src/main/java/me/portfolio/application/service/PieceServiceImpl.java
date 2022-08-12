@@ -7,6 +7,8 @@ import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
 import me.portfolio.library.service.PieceStrategySelector;
 import me.portfolio.log.aop.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,6 +20,7 @@ public class PieceServiceImpl implements PieceService{
     private final static int BOARD_WIDTH = 9;
     private final static int BOARD_LENGTH = 10;
     private final PieceDAO pieceDAO;
+    private final static Logger LOGGER = LoggerFactory.getLogger(PieceServiceImpl.class);
 
     public PieceServiceImpl(PieceDAO pieceDAO) {
         this.pieceDAO = pieceDAO;
@@ -41,9 +44,9 @@ public class PieceServiceImpl implements PieceService{
         return pieceMap;
     }
 
-    @Logging
     @Override
     public void updatePiece(Piece piece, boolean alive, Board board) {
+        LOGGER.info("Update {}, alive {}", piece, alive);
         piece.getBoards().add(board);
         piece.setAlive(alive);
         pieceDAO.save(piece);

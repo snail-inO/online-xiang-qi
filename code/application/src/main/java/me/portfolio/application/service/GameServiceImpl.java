@@ -7,6 +7,8 @@ import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.GetPieceIndex;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.log.aop.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class GameServiceImpl implements GameService {
     private final GameDAO gameDAO;
     private final BoardService boardService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final static Logger LOGGER = LoggerFactory.getLogger(GameServiceImpl.class);
 
     public GameServiceImpl(GameDAO gameDAO, BoardServiceImpl boardService, ApplicationEventPublisher applicationEventPublisher) {
         this.gameDAO = gameDAO;
@@ -50,9 +53,9 @@ public class GameServiceImpl implements GameService {
         return game;
     }
 
-    @Logging
     @Override
     public void updateGame(Board board, Piece prePiece, Piece curPiece) {
+        LOGGER.info("Update game: {}", prePiece);
         Game curGame = board.getGame();
         Board newBoard = boardService.updateBoard(board, prePiece, curPiece);
 

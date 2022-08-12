@@ -153,19 +153,5 @@ public class Piece {
         return Objects.hash(id, type, strategy, color, row, col, alive, boards, lastModifiedDate, createDate);
     }
 
-    @Override
-    public String toString() {
-        return "Piece{" +
-                "id='" + id + '\'' +
-                ", type=" + type +
-                ", strategy=" + strategy +
-                ", color=" + color +
-                ", row=" + row +
-                ", col=" + col +
-                ", alive=" + alive +
-                ", boards=" + boards +
-                ", lastModifiedDate=" + lastModifiedDate +
-                ", createDate=" + createDate +
-                '}';
-    }
+
 }

@@ -37,7 +37,7 @@ public class PieceStrategyMaImpl extends GeneralPieceStrategyImpl {
                 valid = true;
             }
         }
-        return valid && !board.getPieces().containsKey(9 * blockRow + blockCol-1);
+        return valid && !board.getPieces().containsKey(9 * blockRow + blockCol);
     }
 
 

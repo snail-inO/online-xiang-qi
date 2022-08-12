@@ -45,16 +45,15 @@ public class PieceController {
         Board finalBoard = board;
         board = boardDAO.findById(board.getId()).orElseThrow(() -> new EntityNotFoundException(Board.class, finalBoard.getId()));
         Map<Integer, Piece> pieceMap = board.getPieces();
+        int count = 0;
         for (Integer key : pieceMap.keySet()) {
             String pid = pieceMap.get(key).getId();
             pieceMap.replace(key, pieceDAO.findById(pid).orElseThrow(() -> new EntityNotFoundException(Piece.class, pid)));
         }
+        LOGGER.info("count {}", count);
         curPiece.setStrategy(PieceStrategySelector.SELECT_BY_TYPE(curPiece.getType()));
         Piece postPiece = curPiece.getStrategy().move(board, curPiece, piece.getCol(), piece.getRow());
-        LOGGER.info(String.valueOf(postPiece.getCol()));
-        LOGGER.info(String.valueOf(postPiece.getRow()));
-        LOGGER.info(String.valueOf(piece.getCol()));
-        LOGGER.info(String.valueOf(piece.getRow()));
+
         if (postPiece.getCol() == piece.getCol() && postPiece.getRow() == piece.getRow()) {
             gameService.updateGame(board, curPiece, postPiece);
             return ResponseEntity.created(linkTo(methodOn(PieceController.class).updatePiece(id, piece)).withSelfRel().toUri()).body(piece);
