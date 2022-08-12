@@ -20,14 +20,14 @@ public class PieceStrategyShuaiImpl extends GeneralPieceStrategyImpl{
             int rowAbs = Math.abs(preRow-curRow);
             int min = Math.min(colAbs, rowAbs);
             int max = Math.max(colAbs, rowAbs);
-            if(min == PieceTypeEnum.SHUAI.getMin() && max == PieceTypeEnum.SHUAI.getMin()) return true;
+            if(min == PieceTypeEnum.SHUAI.getMin() && max == PieceTypeEnum.SHUAI.getMax()) return true;
             return false;
-        } else if (curCol == preCol && board.getPieces().containsKey(9 * curRow + curCol - 1)
-                && board.getPieces().get(9 * curRow + curCol - 1).getType() == PieceTypeEnum.SHUAI) {
+        } else if (curCol == preCol && board.getPieces().containsKey(9 * curRow + curCol)
+                && board.getPieces().get(9 * curRow + curCol).getType() == PieceTypeEnum.SHUAI) {
             int min = Math.min(preRow, curRow);
             int max = Math.max(preRow, curRow);
-            for(int i = min+1; i < max; i ++){
-                if(board.getPieces().containsKey(9*curRow+i-1)) {
+            for(int i = min+1; i < max; i++){
+                if(board.getPieces().containsKey(9*i + preCol)) {
                     block = true;
                 }
             }

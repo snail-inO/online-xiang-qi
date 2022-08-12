@@ -17,7 +17,7 @@ public class PieceStrategyXiangImpl extends GeneralPieceStrategyImpl{
             //move valid
                 && Math.abs(curCol - preCol) == PieceTypeEnum.XIANG.getMax()
                 && Math.abs(curRow - preRow) == PieceTypeEnum.XIANG.getMax()
-        ) return !board.getPieces().containsKey(9 * (curRow + preRow) / 2 + (curCol + preCol) /2 - 1);
+        ) return !board.getPieces().containsKey(9 * (curRow + preRow) / 2 + (curCol + preCol) /2);
         return false;
     }
 }

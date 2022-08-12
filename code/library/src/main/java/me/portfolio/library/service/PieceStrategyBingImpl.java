@@ -18,8 +18,8 @@ public class PieceStrategyBingImpl extends GeneralPieceStrategyImpl{
                 || preRow > 4 && prePiece.getColor() == PieceColorEnum.BLACK
         ) {
             if(preCol != curCol) return false;
-            else if(curRow == preRow + PieceTypeEnum.BING.getMin() && prePiece.getColor() == PieceColorEnum.RED
-                    || curRow == preRow - PieceTypeEnum.BING.getMin() && prePiece.getColor() == PieceColorEnum.RED
+            else if(curRow == preRow + PieceTypeEnum.BING.getMax() && prePiece.getColor() == PieceColorEnum.RED
+                    || curRow == preRow - PieceTypeEnum.BING.getMax() && prePiece.getColor() == PieceColorEnum.BLACK
             ) return true;
             else return false;
         }
