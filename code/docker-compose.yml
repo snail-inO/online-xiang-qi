@@ -18,7 +18,7 @@ services:
       - MONGO_DB_PASSWORD=$MONGO_DB_PASSWORD
     networks:
       - main-network
-    command: ["--bind_ip","0.0.0.0"]
+    command: [ "--bind_ip","0.0.0.0" ]
 
   web:
     build:

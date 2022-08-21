@@ -3,11 +3,11 @@ package me.portfolio.library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import me.portfolio.library.service.PieceStrategy;
+import me.portfolio.library.service.PieceStrategySelector;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 import java.util.List;
@@ -18,9 +18,6 @@ public class Piece {
     @Id
     private String id;
     private PieceTypeEnum type;
-    @Transient
-    @JsonIgnore
-    private PieceStrategy strategy;
     private PieceColorEnum color;
     private int row;
     private int col;
@@ -33,13 +30,17 @@ public class Piece {
     @JsonIgnore
     @CreatedDate
     private Date createDate;
+
     public Piece() {
     }
 
-    public Piece(String id, PieceTypeEnum type, PieceStrategy strategy, PieceColorEnum color, int row, int col, boolean alive, List<Board> boards) {
+    public Piece(PieceTypeEnum type) {
+        this.type = type;
+    }
+
+    public Piece(String id, PieceTypeEnum type, PieceColorEnum color, int row, int col, boolean alive, List<Board> boards) {
         this.id = id;
         this.type = type;
-        this.strategy = strategy;
         this.color = color;
         this.row = row;
         this.col = col;
@@ -50,7 +51,6 @@ public class Piece {
     public Piece(Piece piece) {
         this.id = piece.id;
         this.type = piece.type;
-        this.strategy = piece.strategy;
         this.color = piece.color;
         this.row = piece.row;
         this.col = piece.col;
@@ -68,18 +68,6 @@ public class Piece {
 
     public PieceTypeEnum getType() {
         return type;
-    }
-
-    public void setType(PieceTypeEnum type) {
-        this.type = type;
-    }
-
-    public PieceStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(PieceStrategy strategy) {
-        this.strategy = strategy;
     }
 
     public PieceColorEnum getColor() {
@@ -143,27 +131,13 @@ public class Piece {
         if (this == o) return true;
         if (!(o instanceof Piece)) return false;
         Piece piece = (Piece) o;
-        return row == piece.row && col == piece.col && alive == piece.alive && Objects.equals(id, piece.id) && type == piece.type && Objects.equals(strategy, piece.strategy) && color == piece.color && Objects.equals(boards, piece.boards) && Objects.equals(lastModifiedDate, piece.lastModifiedDate) && Objects.equals(createDate, piece.createDate);
+        return row == piece.row && col == piece.col && alive == piece.alive && Objects.equals(id, piece.id) && type == piece.type && color == piece.color && Objects.equals(boards, piece.boards) && Objects.equals(lastModifiedDate, piece.lastModifiedDate) && Objects.equals(createDate, piece.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, strategy, color, row, col, alive, boards, lastModifiedDate, createDate);
+        return Objects.hash(id, type, color, row, col, alive, boards, lastModifiedDate, createDate);
     }
 
-    @Override
-    public String toString() {
-        return "Piece{" +
-                "id='" + id + '\'' +
-                ", type=" + type +
-                ", strategy=" + strategy +
-                ", color=" + color +
-                ", row=" + row +
-                ", col=" + col +
-                ", alive=" + alive +
-                ", boards=" + boards +
-                ", lastModifiedDate=" + lastModifiedDate +
-                ", createDate=" + createDate +
-                '}';
-    }
+
 }

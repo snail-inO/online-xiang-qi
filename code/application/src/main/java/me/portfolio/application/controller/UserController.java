@@ -6,15 +6,19 @@ import me.portfolio.application.service.GameService;
 import me.portfolio.application.service.GameServiceImpl;
 import me.portfolio.application.service.UserService;
 import me.portfolio.application.service.UserServiceImpl;
+import me.portfolio.library.entity.Game;
 import me.portfolio.library.entity.User;
-import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.util.MatchingQueue;
+import me.portfolio.library.util.PieceColorEnum;
+import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.log.aop.Logging;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.*;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +53,7 @@ public class UserController {
         Collection<EntityModel<User>> userModels = userPage.getContent().stream()
                 .map(assembler::toModel).collect(Collectors.toList());
         return PagedModel.of(userModels, new PagedModel.PageMetadata(
-                userPage.getSize(), userPage.getNumber(), userPage.getTotalElements(), userPage.getTotalPages()),
+                        userPage.getSize(), userPage.getNumber(), userPage.getTotalElements(), userPage.getTotalPages()),
                 linkTo(methodOn(UserController.class).retrieveUsers(pageable)).withSelfRel());
     }
 
@@ -102,11 +106,15 @@ public class UserController {
                     String uid = queue.poll();
                     users.add(userDAO.findById(uid).orElseThrow(() -> new EntityNotFoundException(User.class, uid)));
                 }
-                gameService.initGame(users);
+                Game game = gameService.initGame(users);
                 users.forEach(u -> {
                     u.setStatus(UserStatusEnum.GAMING);
                     userService.setUserStatus(u);
                 });
+                User red = game.getUsers().get(PieceColorEnum.RED);
+                red.setStatus(UserStatusEnum.GAMING);
+                userService.setUserStatus(red);
+                gameService.publishGameEvent(game);
             }
 
         }

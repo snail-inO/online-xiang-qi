@@ -2,7 +2,9 @@ package me.portfolio.application;
 
 import me.portfolio.application.service.BoardServiceImpl;
 import me.portfolio.application.service.GameServiceImpl;
-import me.portfolio.library.entity.*;
+import me.portfolio.library.entity.Board;
+import me.portfolio.library.entity.Game;
+import me.portfolio.library.entity.User;
 import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.PieceColorEnum;
 import org.junit.jupiter.api.Test;

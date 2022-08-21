@@ -1,9 +1,11 @@
 package me.portfolio.library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 import java.util.Map;
@@ -32,6 +34,13 @@ public class Board {
         this.step = step;
         this.pieces = pieces;
         this.game = game;
+    }
+
+    public Board(Board board) {
+        this.id = board.id;
+        this.step = board.step;
+        this.pieces = board.pieces;
+        this.game = board.game;
     }
 
     public String getId() {
@@ -82,15 +91,5 @@ public class Board {
         this.createDate = createDate;
     }
 
-    @Override
-    public String toString() {
-        return "Board{" +
-                "id='" + id + '\'' +
-                ", step=" + step +
-                ", pieces=" + pieces +
-                ", game=" + game +
-                ", lastModifiedDate=" + lastModifiedDate +
-                ", createDate=" + createDate +
-                '}';
-    }
+
 }
