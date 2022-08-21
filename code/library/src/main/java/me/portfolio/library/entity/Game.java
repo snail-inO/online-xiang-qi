@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +23,8 @@ public class Game {
     private Map<PieceColorEnum, User> users;
     @Reference(to = Board.class)
     private List<Board> boards;
+    @Reference(to = User.class)
+    private User winner;
     @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
@@ -31,12 +32,13 @@ public class Game {
     @CreatedDate
     private Date createDate;
 
-    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards) {
+    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards, User winner) {
         this.id = id;
         this.status = status;
         this.totalSteps = totalSteps;
-        this.boards = boards;
         this.users = users;
+        this.boards = boards;
+        this.winner = winner;
     }
 
     public Game() {
@@ -80,6 +82,14 @@ public class Game {
 
     public void setBoards(List<Board> boards) {
         this.boards = boards;
+    }
+
+    public User getWinner() {
+        return winner;
+    }
+
+    public void setWinner(User winner) {
+        this.winner = winner;
     }
 
     public Date getLastModifiedDate() {

@@ -9,29 +9,28 @@ public class PieceStrategyMaImpl extends GeneralPieceStrategyImpl {
         int blockCol = -1;
         int blockRow = -1;
         boolean valid = false;
-        if(Math.abs(prePiece.getRow()-curRow) == prePiece.getType().getMin()){
+        if (Math.abs(prePiece.getRow() - curRow) == prePiece.getType().getMin()) {
             //Left Block
-            if(prePiece.getCol() - curCol == prePiece.getType().getMax()){
+            if (prePiece.getCol() - curCol == prePiece.getType().getMax()) {
                 blockRow = prePiece.getRow();
                 blockCol = curCol + 1;
                 valid = true;
             }
             //Right Block
-            else if(prePiece.getCol() - curCol == -prePiece.getType().getMax()){
-                blockRow = prePiece.getRow();;
+            else if (prePiece.getCol() - curCol == -prePiece.getType().getMax()) {
+                blockRow = prePiece.getRow();
                 blockCol = curCol - 1;
                 valid = true;
             }
-        }
-        else if(Math.abs(prePiece.getCol()-curCol) == prePiece.getType().getMin()){
+        } else if (Math.abs(prePiece.getCol() - curCol) == prePiece.getType().getMin()) {
             //Bottom Block
-            if(prePiece.getRow() - curRow == prePiece.getType().getMax()){
+            if (prePiece.getRow() - curRow == prePiece.getType().getMax()) {
                 blockRow = curRow + 1;
                 blockCol = prePiece.getCol();
                 valid = true;
             }
             //Top Block
-            else if(prePiece.getRow() - curRow == - prePiece.getType().getMax()){
+            else if (prePiece.getRow() - curRow == -prePiece.getType().getMax()) {
                 blockRow = curRow - 1;
                 blockCol = prePiece.getCol();
                 valid = true;

@@ -1,7 +1,6 @@
 package me.portfolio.library.service;
 
 import me.portfolio.library.util.PieceTypeEnum;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +8,10 @@ import java.util.Map;
 public class PieceStrategySelector {
     private final static Map<PieceTypeEnum, PieceStrategy> StrategyPool = new HashMap<>();
 
-    private PieceStrategySelector(){
+    private PieceStrategySelector() {
 
     }
+
     public static PieceStrategy SELECT_BY_TYPE(PieceTypeEnum type) {
         if (StrategyPool.containsKey(type)) {
             return StrategyPool.get(type);
@@ -29,7 +29,7 @@ public class PieceStrategySelector {
             case MA:
                 StrategyPool.put(type, new PieceStrategyMaImpl());
                 return StrategyPool.get(type);
-            case JU: ;
+            case JU:
                 StrategyPool.put(type, new PieceStrategyJuImpl());
                 return StrategyPool.get(type);
             case PAO:

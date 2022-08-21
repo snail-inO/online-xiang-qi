@@ -1,7 +1,7 @@
 package me.portfolio.library.util;
 
 public enum BoundaryEnum {
-    BOARD_BOUNDARY(0,0,9,10);
+    BOARD_BOUNDARY(0, 0, 9, 10);
     private final int left;
     private final int bottom;
     private final int right;

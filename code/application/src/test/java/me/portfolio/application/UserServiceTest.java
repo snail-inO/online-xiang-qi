@@ -1,10 +1,10 @@
 package me.portfolio.application;
 
 import me.portfolio.application.DAO.UserDAO;
-import me.portfolio.library.entity.User;
-import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.application.service.UserServiceImpl;
+import me.portfolio.library.entity.User;
 import me.portfolio.library.util.MatchingQueue;
+import me.portfolio.library.util.UserStatusEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,44 +66,28 @@ public class UserServiceTest {
 
         user.setStatus(UserStatusEnum.ONLINE);
         userService.setUserStatus(user);
-        Thread.sleep(500);
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.ONLINE);
-
-        Thread.sleep(600);
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
-
-        user.setStatus(UserStatusEnum.ONLINE);
-        userService.setUserStatus(user);
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.ONLINE);
-        Thread.sleep(700);
-        userService.setUserStatus(user);
-        Thread.sleep(700);
         assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.ONLINE);
 
         user.setStatus(UserStatusEnum.OFFLINE);
         userService.setUserStatus(user);
         assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
-        userService.setUserStatus(user);
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
 
         user.setStatus(UserStatusEnum.ONLINE);
         userService.setUserStatus(user);
+        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.ONLINE);
+
         user.setStatus(UserStatusEnum.MATCHING);
         userService.setUserStatus(user);
         assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.MATCHING);
         assertThat(queue.peek()).isEqualTo(user.getId());
-        Thread.sleep(1100);
-        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
-        assertThat(queue.peek()).isNull();
-
-        user = new User();
-        user.setName("abc");
-        user.setStatus(UserStatusEnum.OFFLINE);
-        user = userDAO.save(user);
-        assertThat(user.getStatus()).isEqualTo(UserStatusEnum.OFFLINE);
+        queue.poll();
+        user.setStatus(UserStatusEnum.GAMING);
+        userService.setUserStatus(user);
+        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.GAMING);
         user.setStatus(UserStatusEnum.ONLINE);
-        user = userService.setUserStatus(user);
-        assertThat(user.getStatus()).isEqualTo(UserStatusEnum.ONLINE);
+        userService.setUserStatus(user);
+        assertThat(userDAO.findById(user.getId()).get().getStatus()).isEqualTo(UserStatusEnum.ONLINE);
+
     }
 
 }

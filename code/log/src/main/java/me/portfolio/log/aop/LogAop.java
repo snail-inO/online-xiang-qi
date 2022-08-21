@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Enumeration;
 
 @Aspect
 @Component
@@ -23,7 +22,7 @@ public class LogAop {
     private final static Logger LOGGER = LoggerFactory.getLogger(LogAop.class);
 
     @Around(value = "@annotation(me.portfolio.log.aop.Logging)")
-    public Object methodLogging(ProceedingJoinPoint joinPoint) throws Throwable{
+    public Object methodLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
             return joinPoint.proceed();

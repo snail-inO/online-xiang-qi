@@ -4,10 +4,10 @@ package me.portfolio.application.service;
 import me.portfolio.application.DAO.UserDAO;
 import me.portfolio.application.websocket.EntityEvent;
 import me.portfolio.library.entity.User;
-import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.MatchingQueue;
+import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.log.aop.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +15,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Timer;
 
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private static final Map<String, Timer> OFFLINE_TIMER = new HashMap<>();
+    private final ApplicationEventPublisher applicationEventPublisher;
     @Value("${user.offline_time}")
     private Long OFFLINE_TIME;
-
-    private final ApplicationEventPublisher applicationEventPublisher;
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
     public UserServiceImpl(ApplicationEventPublisher applicationEventPublisher, UserDAO userDAO) {
         this.applicationEventPublisher = applicationEventPublisher;
@@ -48,16 +50,16 @@ public class UserServiceImpl implements UserService {
                 if (curTimer != null) {
                     curTimer.cancel();
                 }
-                Timer timer = new Timer();
-                timer.schedule(new SetUserOfflineTask(uid), OFFLINE_TIME);
-                entity.setStatus(UserStatusEnum.ONLINE);
                 OFFLINE_TIMER.remove(uid);
-                OFFLINE_TIMER.put(uid, timer);
+
+                entity.setStatus(UserStatusEnum.ONLINE);
                 break;
             case OFFLINE:
                 if (entity.getStatus() == UserStatusEnum.OFFLINE)
                     break;
-                curTimer.cancel();
+                if (curTimer != null) {
+                    curTimer.cancel();
+                }
                 OFFLINE_TIMER.remove(uid);
                 if (entity.getStatus() == UserStatusEnum.MATCHING)
                     dequeue(entity);
@@ -68,10 +70,22 @@ public class UserServiceImpl implements UserService {
                 entity = enqueue(entity);
                 break;
             case GAMING:
-                if (entity.getStatus() != UserStatusEnum.MATCHING)
+                if (entity.getStatus() != UserStatusEnum.MATCHING && entity.getStatus() != UserStatusEnum.GAMING)
                     throw new InvalidOperationException(User.class, entity.getId());
-                entity.setStatus(UserStatusEnum.GAMING);
-                entity.setTotalGames(entity.getTotalGames() + 1);
+
+                if (entity.getStatus() == UserStatusEnum.MATCHING) {
+                    entity.setStatus(UserStatusEnum.GAMING);
+                    entity.setTotalGames(entity.getTotalGames() + 1);
+                    break;
+                }
+                if (curTimer != null) {
+                    curTimer.cancel();
+                    OFFLINE_TIMER.remove(uid);
+                } else {
+                    Timer timer = new Timer();
+                    timer.schedule(new SetUserOfflineTask(uid), OFFLINE_TIME);
+                    OFFLINE_TIMER.put(uid, timer);
+                }
                 break;
         }
 
@@ -79,24 +93,10 @@ public class UserServiceImpl implements UserService {
         return entity;
     }
 
-    class SetUserOfflineTask extends java.util.TimerTask {
-
-        private final String uid;
-
-        SetUserOfflineTask(String uid) {
-            this.uid = uid;
-        }
-
-        @Override
-        public void run() {
-            OFFLINE_TIMER.remove(uid);
-
-            User user = userDAO.findById(uid).get();
-            if (user.getStatus() == UserStatusEnum.MATCHING)
-                dequeue(user);
-            user.setStatus(UserStatusEnum.OFFLINE);
-            userDAO.save(user);
-        }
+    @Override
+    public User addWinCount(User user) {
+        user.setWins(user.getWins() + 1);
+        return userDAO.save(user);
     }
 
     private User enqueue(User user) {
@@ -124,5 +124,23 @@ public class UserServiceImpl implements UserService {
     private void publishSetUserStatusEvent(final User user) {
         EntityEvent entityEvent = new EntityEvent(this, user);
         applicationEventPublisher.publishEvent(entityEvent);
+    }
+
+    class SetUserOfflineTask extends java.util.TimerTask {
+
+        private final String uid;
+
+        SetUserOfflineTask(String uid) {
+            this.uid = uid;
+        }
+
+        @Override
+        public void run() {
+            OFFLINE_TIMER.remove(uid);
+
+            User user = userDAO.findById(uid).get();
+            user.setStatus(UserStatusEnum.OFFLINE);
+            userDAO.save(user);
+        }
     }
 }

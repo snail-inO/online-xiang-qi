@@ -2,6 +2,7 @@ package me.portfolio.library.service;
 
 import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
+import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.BoundaryEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,9 @@ public abstract class GeneralPieceStrategyImpl implements PieceStrategy {
             curPiece.setCol(curCol);
             curPiece.setRow(curRow);
             return curPiece;
+        } else {
+            throw new InvalidOperationException(Piece.class, prePiece.getId());
         }
-        return prePiece;
     }
 
     protected abstract boolean pieceMove(Board board, Piece prePiece, int curCol, int curRow);
