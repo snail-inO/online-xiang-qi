@@ -1,6 +1,5 @@
 package me.portfolio.application.service;
 
-import me.portfolio.application.DAO.GameDAO;
 import me.portfolio.application.DAO.PieceDAO;
 import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
@@ -19,8 +18,8 @@ import java.util.Map;
 public class PieceServiceImpl implements PieceService {
     private final static int BOARD_WIDTH = 9;
     private final static int BOARD_LENGTH = 10;
-    private final PieceDAO pieceDAO;
     private final static Logger LOGGER = LoggerFactory.getLogger(PieceServiceImpl.class);
+    private final PieceDAO pieceDAO;
 
     public PieceServiceImpl(PieceDAO pieceDAO) {
         this.pieceDAO = pieceDAO;

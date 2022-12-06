@@ -106,7 +106,7 @@ public class UserController {
                     String uid = queue.poll();
                     users.add(userDAO.findById(uid).orElseThrow(() -> new EntityNotFoundException(User.class, uid)));
                 }
-                Game game = gameService.initGame(users);
+                Game game = gameService.initGame(users, -1);
                 users.forEach(u -> {
                     u.setStatus(UserStatusEnum.GAMING);
                     userService.setUserStatus(u);

@@ -9,7 +9,6 @@ import me.portfolio.library.entity.User;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.PieceColorEnum;
-import me.portfolio.library.util.UserStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,17 +18,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(GameServiceImpl.class);
     private final GameDAO gameDAO;
     private final BoardService boardService;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final static Logger LOGGER = LoggerFactory.getLogger(GameServiceImpl.class);
 
     public GameServiceImpl(GameDAO gameDAO, BoardServiceImpl boardService, ApplicationEventPublisher applicationEventPublisher) {
         this.gameDAO = gameDAO;
@@ -38,7 +36,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game initGame(Collection<User> users) {
+    public Game initGame(Collection<User> users, int size) {
         AtomicInteger random = new AtomicInteger((int) Math.round(Math.random()));
         Map<PieceColorEnum, User> userColor = new HashMap<>();
         Game initGame = new Game();
@@ -48,8 +46,9 @@ public class GameServiceImpl implements GameService {
             users.stream().forEach(user -> {
                 userColor.put(PieceColorEnum.values()[random.getAndSet((random.get() + 1) % 2)], user);
             });
+//            initGame.setUsers(userColor);
             game = new Game(initGame.getId(), GameStatusEnum.IN_PROGRESS, 0, userColor,
-                    Collections.singletonList(boardService.initBoard(initGame)).stream().collect(Collectors.toList()),
+                    Collections.singletonList(boardService.initBoard(initGame, size)).stream().collect(Collectors.toList()),
                     null);
         } catch (Exception e) {
             gameDAO.delete(initGame);
@@ -88,17 +87,18 @@ public class GameServiceImpl implements GameService {
     }
 
     private boolean validate(Game game) {
-       if (game.getStatus() == GameStatusEnum.END) {
-           return false;
-       }
-       AtomicBoolean res = new AtomicBoolean(true);
-       game.getUsers().values().forEach(user -> {
-           if (user.getStatus() != UserStatusEnum.GAMING) {
-               res.set(false);
-           }
-       });
+        if (game.getStatus() == GameStatusEnum.END) {
+            return false;
+        }
+//       AtomicBoolean res = new AtomicBoolean(true);
+//       game.getUsers().values().forEach(user -> {
+//           if (user.getStatus() != UserStatusEnum.GAMING) {
+//               res.set(false);
+//           }
+//       });
 
-       return res.get();
+//       return res.get();
+        return true;
     }
 
     public void publishGameEvent(Game game) {

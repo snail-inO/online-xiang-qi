@@ -25,9 +25,9 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private static final Map<String, Timer> OFFLINE_TIMER = new HashMap<>();
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final UserDAO userDAO;
     @Value("${user.offline_time}")
     private Long OFFLINE_TIME;
-    private final UserDAO userDAO;
 
     public UserServiceImpl(ApplicationEventPublisher applicationEventPublisher, UserDAO userDAO) {
         this.applicationEventPublisher = applicationEventPublisher;
