@@ -4,8 +4,10 @@ package me.portfolio.library.util;
 import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
 import me.portfolio.library.entity.State;
+import me.portfolio.library.entity.Tensor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +35,20 @@ public interface AIHelper {
         return maxChild;
     }
 
+    static Tensor toTensor(State state) {
+        int[] temp = state.getDistribution();
+        Tensor tensor = new Tensor(null, new ArrayList<>());
+        for (int v : temp) {
+            Boolean[] index = new Boolean[15];
+            if (v < 0) {
+                v = -v + 7;
+            }
+            index[v] = true;
+            tensor.getBoard().add(Arrays.asList(index));
+        }
+
+        return tensor;
+    }
     static int leastVisitIndex(State state, PieceColorEnum color) {
         int sign = color.equals(PieceColorEnum.BLACK) ? -1 : 1;
         List<State> children = state.getChildren();

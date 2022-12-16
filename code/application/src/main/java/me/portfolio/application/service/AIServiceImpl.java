@@ -42,6 +42,13 @@ public class AIServiceImpl {
         } else {
             color = setColor;
         }
+        if (strategy == 2) {
+            if (curState.getChildren() == null) {
+                curState.setActions(validActions(curState));
+            }
+            int nextIndex = uniformlyRandom(curState);
+            return AIHelper.transformAction(board, curState.getActions().get(nextIndex));
+        }
         for (int i = 0; i < 50; i++) {
             System.out.println("rollout: " + i);
             rollout(curState, strategy, 100, 1);
@@ -76,7 +83,7 @@ public class AIServiceImpl {
             case 1:
                 return UCT(state, sign);
             case 2:
-                return uniformlyRandom(state);
+//                return uniformlyRandom(state);
             default:
 
         }
@@ -84,20 +91,20 @@ public class AIServiceImpl {
         return null;
     }
 
-    private static State uniformlyRandom(State state) {
+    private static int uniformlyRandom(State state) {
         Random rnd = new Random();
         int sign = color.equals(PieceColorEnum.BLACK) ? -1 : 1;
 
         int nextIndex = rnd.nextInt(state.getChildren().size());
-        State nextSate = state.getChildren().get(rnd.nextInt(state.getChildren().size()));
+//        State nextSate = state.getChildren().get(rnd.nextInt(state.getChildren().size()));
         int[] action = state.getActions().get(nextIndex);
         while (state.getDistribution()[action[0]] * sign < 0) {
             nextIndex = rnd.nextInt(state.getChildren().size());
-            nextSate = state.getChildren().get(rnd.nextInt(state.getChildren().size()));
+//            nextSate = state.getChildren().get(rnd.nextInt(state.getChildren().size()));
             action = state.getActions().get(nextIndex);
         }
 
-        return nextSate;
+        return nextIndex;
     }
 
     private static State exploitation(State state) {
