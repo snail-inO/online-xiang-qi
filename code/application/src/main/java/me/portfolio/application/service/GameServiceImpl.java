@@ -2,10 +2,7 @@ package me.portfolio.application.service;
 
 import me.portfolio.application.DAO.GameDAO;
 import me.portfolio.application.websocket.EntityEvent;
-import me.portfolio.library.entity.Board;
-import me.portfolio.library.entity.Game;
-import me.portfolio.library.entity.Piece;
-import me.portfolio.library.entity.User;
+import me.portfolio.library.entity.*;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.PieceColorEnum;
@@ -49,7 +46,7 @@ public class GameServiceImpl implements GameService {
 //            initGame.setUsers(userColor);
             game = new Game(initGame.getId(), GameStatusEnum.IN_PROGRESS, 0, userColor,
                     Collections.singletonList(boardService.initBoard(initGame, size)).stream().collect(Collectors.toList()),
-                    null);
+                    null, null);
         } catch (Exception e) {
             gameDAO.delete(initGame);
             throw e;
@@ -85,6 +82,7 @@ public class GameServiceImpl implements GameService {
     public Game endGame(Game game, User winner) {
         game.setWinner(winner);
         game.setStatus(GameStatusEnum.END);
+        game.setScore(new State(game.latestBoard()).getUtility());
         return gameDAO.save(game);
     }
 

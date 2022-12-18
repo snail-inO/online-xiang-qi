@@ -10,7 +10,6 @@ import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.GetPieceIndex;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
-import me.portfolio.log.aop.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class BoardServiceImpl implements BoardService {
         this.pieceService = pieceService;
     }
 
-//    @Logging
+    //    @Logging
     @Override
     public Board initBoard(Game game, int size) {
         Map<Integer, Piece> pieceMap = new HashMap<>();
