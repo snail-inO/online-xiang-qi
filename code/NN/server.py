@@ -1,8 +1,10 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import torch as tr
 from train import ConvNet, encode
-app = Flask(__name__)
 
+app = Flask(__name__)
+CORS(app)
 
 net = ConvNet(10, 9, 45, (10, 9))
 net.load_state_dict(tr.load("./nn"))
@@ -21,4 +23,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host = "127.0.0.1", port=7070)
+    app.run(host = "0.0.0.0", port=7070)

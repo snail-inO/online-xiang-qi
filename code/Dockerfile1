@@ -1,0 +1,7 @@
+FROM python:3.9
+
+RUN pip3 install --no-cache-dir flask flask_cors torch pymongo numpy matplotlib
+
+COPY NN .
+
+ENTRYPOINT ["python3", "./server.py"]
