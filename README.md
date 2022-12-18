@@ -8,7 +8,7 @@ The project contains three modules: backend server, [frontend application](https
 
 ## Get Started
 ### Prerequisites
-* Docker (version = 20.10.17)
+* [Docker](https://www.docker.com/) (version = 20.10.17)
 
 ### Deployment
 #### Backend
