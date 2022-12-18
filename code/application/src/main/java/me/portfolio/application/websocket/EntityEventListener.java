@@ -12,9 +12,9 @@ import static me.portfolio.application.websocket.WebSocketConfiguration.MESSAGE_
 
 @Component
 public class EntityEventListener implements ApplicationListener<EntityEvent> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(EntityEventListener.class);
     private final SimpMessagingTemplate websocket;
     private final EntityLinks entityLinks;
-    private final static Logger LOGGER = LoggerFactory.getLogger(EntityEventListener.class);
 
     public EntityEventListener(SimpMessagingTemplate websocket, EntityLinks entityLinks) {
         this.websocket = websocket;

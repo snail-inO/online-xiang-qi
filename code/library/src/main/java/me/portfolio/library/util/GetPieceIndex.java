@@ -6,4 +6,5 @@ public interface GetPieceIndex {
     static int getIndex(Piece piece) {
         return piece.getRow() * 9 + piece.getCol();
     }
+
 }

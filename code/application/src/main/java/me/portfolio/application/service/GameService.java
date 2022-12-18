@@ -8,8 +8,11 @@ import me.portfolio.library.entity.User;
 import java.util.Collection;
 
 public interface GameService {
-    Game initGame(Collection<User> users);
+    Game initGame(Collection<User> users, int size);
+
     Game updateGame(Board board, Piece prePiece, Piece curPiece);
+
     Game endGame(Game game, User winner);
+
     void publishGameEvent(Game game);
 }

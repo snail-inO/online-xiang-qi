@@ -38,7 +38,7 @@ public class BoardServiceTest {
             types.add(invocationOnMock.getArgument(1));
             return new HashMap<>();
         });
-        boardService.initBoard(new Game());
+        boardService.initBoard(new Game(), -1);
         assertThat(types).containsExactlyElementsOf(Arrays.stream(PieceTypeEnum.values()).collect(Collectors.toList()));
     }
 }

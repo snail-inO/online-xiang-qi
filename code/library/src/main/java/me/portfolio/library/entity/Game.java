@@ -84,6 +84,10 @@ public class Game {
         this.boards = boards;
     }
 
+    public Board latestBoard() {
+        return boards.get(boards.size() - 1);
+    }
+
     public User getWinner() {
         return winner;
     }

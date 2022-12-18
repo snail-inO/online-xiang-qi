@@ -36,4 +36,5 @@ public class PieceStrategyShuaiImpl extends GeneralPieceStrategyImpl {
         }
         return false;
     }
+
 }

@@ -2,11 +2,12 @@ package me.portfolio.library.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import me.portfolio.library.service.PieceStrategy;
-import me.portfolio.library.service.PieceStrategySelector;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
-import org.springframework.data.annotation.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;

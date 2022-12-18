@@ -5,7 +5,7 @@ import me.portfolio.library.entity.Game;
 import me.portfolio.library.entity.Piece;
 
 public interface BoardService {
-    Board initBoard(Game game);
+    Board initBoard(Game game, int size);
 
     Board updateBoard(Board board, Piece prePiece, Piece curPiece);
 }

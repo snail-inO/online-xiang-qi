@@ -36,11 +36,12 @@ public abstract class GeneralPieceStrategyImpl implements PieceStrategy {
         boolean res1 = ValidatePieceBoundary(prePiece, curCol, curRow);
         boolean res2 = !SelfPieceCheck(board, prePiece, curCol, curRow);
         boolean res3 = pieceMove(board, prePiece, curCol, curRow);
-        LOGGER.info(String.valueOf(index));
-        LOGGER.info(String.valueOf(res1));
-        LOGGER.info(String.valueOf(res2));
-        LOGGER.info(String.valueOf(res3));
+//        LOGGER.info(String.valueOf(index));
+//        LOGGER.info(String.valueOf(res1));
+//        LOGGER.info(String.valueOf(res2));
+//        LOGGER.info(String.valueOf(res3));
         if (res1 && res2 && res3) {
+//            LOGGER.info("valid step: " + curRow + ", " + curCol);
             curPiece.setCol(curCol);
             curPiece.setRow(curRow);
             return curPiece;
