@@ -70,10 +70,12 @@ public class GameServiceImpl implements GameService {
         }
 
         Board newBoard = boardService.updateBoard(board, prePiece, curPiece);
-
         String gameId = curGame.getId();
         curGame = gameDAO.findById(gameId).orElseThrow(() -> new InvalidOperationException(Game.class, gameId));
         curGame.getBoards().add(newBoard);
+        if (newBoard.getGame().getWinner() != null || curGame.getTotalSteps() >= 1500) {
+            endGame(curGame, newBoard.getGame().getWinner());
+        }
         curGame.setTotalSteps(curGame.getTotalSteps() + 1);
 
         return gameDAO.save(curGame);

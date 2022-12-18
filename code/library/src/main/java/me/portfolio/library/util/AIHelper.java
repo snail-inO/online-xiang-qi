@@ -37,17 +37,14 @@ public interface AIHelper {
 
     static Tensor toTensor(State state) {
         int[] temp = state.getDistribution();
-        Tensor tensor = new Tensor(null, new ArrayList<>());
-        for (int v : temp) {
-            Boolean[] index = new Boolean[15];
-            if (v < 0) {
-                v = -v + 7;
+        int[][] board = new int[10][9];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 9; j++) {
+                board[i][j] = temp[i * 9 + j];
             }
-            index[v] = true;
-            tensor.getBoard().add(Arrays.asList(index));
         }
 
-        return tensor;
+        return new Tensor(null, board, null);
     }
     static int leastVisitIndex(State state, PieceColorEnum color) {
         int sign = color.equals(PieceColorEnum.BLACK) ? -1 : 1;
@@ -94,9 +91,9 @@ public interface AIHelper {
     static State performAction(State curState, int[] action) {
         State nextState = new State();
         nextState.setDistribution(curState.getDistribution().clone());
-//         System.out.println();
-//         System.out.println("action 0: " + action[0]);
-//         System.out.println("action 1: " + action[1]);
+////         System.out.println();
+////         System.out.println("action 0: " + action[0]);
+////         System.out.println("action 1: " + action[1]);
         nextState.getDistribution()[action[1]] = nextState.getDistribution()[action[0]];
         nextState.getDistribution()[action[0]] = 0;
 

@@ -21,7 +21,8 @@ public class State {
 
     public State(Board board) {
         children = null;
-        utility = Float.MIN_VALUE;
+//        utility = Float.MIN_VALUE;
+        utility = null;
         visitCount = 0;
         totalScore = null;
         estimateScore = null;

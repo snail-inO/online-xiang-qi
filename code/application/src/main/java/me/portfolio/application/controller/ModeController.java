@@ -41,7 +41,7 @@ public class ModeController {
     //    @Logging
     @PutMapping
     public ResponseEntity<?> setGameMode(@RequestParam String uid, @RequestParam int mode1, @RequestParam int mode2, @RequestParam int size) {
-        if (mode2 > GameModeEnum.HUMAN.ordinal() && mode2 <= GameModeEnum.ADVANCE_AI.ordinal()) {
+        if (mode2 > GameModeEnum.HUMAN.ordinal() && mode2 <= GameModeEnum.NN.ordinal()) {
             MatchingQueue.getQueue().poll();
             List<User> users = new ArrayList<>();
             User player = userDAO.findById(uid).orElseThrow(() -> new RuntimeException());
@@ -53,6 +53,7 @@ public class ModeController {
             users.add(player);
             users.add(ai);
             Game game = gameService.initGame(users, size);
+            AIServiceImpl.clearStates();
             if (game.getUsers().get(PieceColorEnum.RED).getId().equals(ai.getId())) {
                 Piece curPiece = pieceDAO.findById(game.latestBoard().getPieces().values().iterator().next().getId()).orElseThrow(() -> new RuntimeException());
                 List<Board> boards = curPiece.getBoards();

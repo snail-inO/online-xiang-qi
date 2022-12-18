@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
         this.pieceService = pieceService;
     }
 
-    @Logging
+//    @Logging
     @Override
     public Board initBoard(Game game, int size) {
         Map<Integer, Piece> pieceMap = new HashMap<>();
@@ -39,12 +39,11 @@ public class BoardServiceImpl implements BoardService {
         try {
             Board finalInitBoard = initBoard;
             PieceTypeEnum randomType;
-            if (size > 1 && size < 7) {
+            if (size > 2 && size < 7) {
                 Set<PieceTypeEnum> record = new HashSet<>();
                 pieceMap.putAll(pieceService.initPiece(finalInitBoard, PieceTypeEnum.SHUAI));
-                randomType = getRandomPiece(true);
-                record.add(randomType);
-                pieceMap.putAll(pieceService.initPiece(finalInitBoard, randomType));
+                pieceMap.putAll(pieceService.initPiece(finalInitBoard, PieceTypeEnum.BING));
+                record.add(PieceTypeEnum.BING);
                 size -= 2;
                 while (size > 0) {
                     randomType = getRandomPiece(false);

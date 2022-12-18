@@ -9,6 +9,7 @@ import me.portfolio.library.entity.User;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.service.PieceStrategySelector;
+import me.portfolio.library.util.GameStatusEnum;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.UserStatusEnum;
 import me.portfolio.log.aop.Logging;
@@ -58,14 +59,15 @@ public class PieceController {
             game = gameService.updateGame(board, performedAction.get(0), performedAction.get(1));
         }
 
-        game.setWinner(game.latestBoard().getGame().getWinner());
         gameService.publishGameEvent(game);
-        if (game.getWinner() != null) {
+        if (game.getStatus() == GameStatusEnum.END) {
             game.getUsers().values().forEach(user -> {
                 user.setStatus(UserStatusEnum.ONLINE);
                 userService.setUserStatus(user);
             });
-            userService.addWinCount(game.getWinner());
+            if (game.getWinner() != null) {
+                userService.addWinCount(game.getWinner());
+            }
         } else if (mode2 != 0 && isAI(game)) {
             List<Piece> performedAction = AIServiceImpl.act(game, mode2, null);
             game = gameService.updateGame(board, performedAction.get(0), performedAction.get(1));
@@ -94,11 +96,7 @@ public class PieceController {
                 userService.setUserStatus(user);
             });
         } catch (InvalidOperationException e) {
-            PieceColorEnum loser = null;
-            for (Map.Entry<PieceColorEnum, User> entry : game.getUsers().entrySet()) {
-                loser = entry.getValue().getStatus() == UserStatusEnum.OFFLINE ? entry.getKey() : loser;
-            }
-            User winner = game.getUsers().get(loser == PieceColorEnum.BLACK ? PieceColorEnum.RED : PieceColorEnum.BLACK);
+            User winner = game.getUsers().get(game.getTotalSteps() % 2 == 1? PieceColorEnum.RED : PieceColorEnum.BLACK);
             gameService.endGame(game, winner);
             game.getUsers().values().forEach(user -> {
                 if (user.getStatus() != UserStatusEnum.OFFLINE) {

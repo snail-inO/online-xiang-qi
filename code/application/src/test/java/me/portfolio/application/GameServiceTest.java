@@ -34,7 +34,7 @@ public class GameServiceTest {
 
     @Test
     public void initGameTest() {
-        when(boardService.initBoard(any(Game.class))).thenReturn(new Board());
+        when(boardService.initBoard(any(Game.class), -1)).thenReturn(new Board());
         List<User> users = new ArrayList<>();
         User user = new User();
         user.setId("1");
@@ -42,7 +42,7 @@ public class GameServiceTest {
         user = new User();
         user.setId("2");
         users.add(user);
-        Game game = gameService.initGame(users);
+        Game game = gameService.initGame(users, -1);
         assertThat(game.getStatus()).isEqualTo(GameStatusEnum.IN_PROGRESS);
         assertThat(game.getUsers().keySet()).containsExactlyInAnyOrderElementsOf(Arrays.stream(PieceColorEnum.values()).collect(Collectors.toList()));
     }

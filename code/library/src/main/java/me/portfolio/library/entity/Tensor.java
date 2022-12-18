@@ -9,14 +9,16 @@ import java.util.List;
 public class Tensor {
     @Id
     private String id;
-    private List<List<Boolean>> board;
+    private int[][] board;
+    private Float score;
 
     public Tensor() {
     }
 
-    public Tensor(String id, List<List<Boolean>> board) {
+    public Tensor(String id, int[][] board, Float score) {
         this.id = id;
         this.board = board;
+        this.score = score;
     }
 
     public String getId() {
@@ -27,11 +29,19 @@ public class Tensor {
         this.id = id;
     }
 
-    public List<List<Boolean>> getBoard() {
+    public int[][] getBoard() {
         return board;
     }
 
-    public void setBoard(List<List<Boolean>> board) {
+    public void setBoard(int[][] board) {
         this.board = board;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 }

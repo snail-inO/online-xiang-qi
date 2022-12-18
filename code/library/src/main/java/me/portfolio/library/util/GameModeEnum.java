@@ -2,6 +2,7 @@ package me.portfolio.library.util;
 
 public enum GameModeEnum {
     HUMAN,
+    ADVANCE_AI,
     BASE_AI,
-    ADVANCE_AI
+    NN
 }

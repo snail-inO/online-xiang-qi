@@ -25,7 +25,7 @@ public class PieceServiceImpl implements PieceService {
         this.pieceDAO = pieceDAO;
     }
 
-    @Logging
+//    @Logging
     @Override
     public Map<Integer, Piece> initPiece(Board board, PieceTypeEnum type) {
         Map<Integer, Piece> pieceMap = new HashMap<>();
