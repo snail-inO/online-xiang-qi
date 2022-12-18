@@ -16,7 +16,38 @@ services:
     restart: on-failure
     depends_on:
       - mongo-db
+      - nn
     ports:
-      - "80:8080"
+      - "8080:8080"
     links:
       - mongo-db
+      - nn
+
+  nn:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    image: xiang-qi-nn
+    container_name: xiang-qi-nn
+    restart: on-failure
+    depends_on:
+      - mongo-db
+    ports:
+      - "7070:7070"
+    expose:
+      - "7070"
+    links:
+      - mongo-db
+
+  front:
+    image: front
+    restart: on-failure
+    container_name: xiang-qi-front
+    depends_on:
+      - xiang-qi
+      - nn
+      - mongo-db
+    ports:
+      - "3000:3000"
+    links:
+      - xiang-qi

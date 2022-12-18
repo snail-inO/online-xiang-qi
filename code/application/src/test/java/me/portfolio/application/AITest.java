@@ -46,7 +46,7 @@ public class AITest {
         userDAO.save(ai);
         users.add(baseAI);
         users.add(ai);
-        for (int size = 6; size < 8; size++) {
+        for (int size = 7; size < 8; size++) {
             for (int i = 0; i < 100; i++) {
                 Metadata metadata = new Metadata();
                 Game game = gameService.initGame(users, size);

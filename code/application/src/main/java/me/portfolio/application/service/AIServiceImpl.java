@@ -167,7 +167,7 @@ public class AIServiceImpl {
             index.add(i);
         }
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, List<Double>> res = restTemplate.postForObject("http://localhost:7070", Collections.singletonMap("states", states), Map.class);
+        Map<String, List<Double>> res = restTemplate.postForObject("http://nn:7070/", Collections.singletonMap("states", states), Map.class);
 //        System.out.println("NN: " + res);
         assert res != null;
         List<Double> utilities = res.get("utils");
