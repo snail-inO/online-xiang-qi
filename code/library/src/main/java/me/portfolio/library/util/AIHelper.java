@@ -7,7 +7,6 @@ import me.portfolio.library.entity.State;
 import me.portfolio.library.entity.Tensor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,6 +45,7 @@ public interface AIHelper {
 
         return new Tensor(null, board, null);
     }
+
     static int leastVisitIndex(State state, PieceColorEnum color) {
         int sign = color.equals(PieceColorEnum.BLACK) ? -1 : 1;
         List<State> children = state.getChildren();

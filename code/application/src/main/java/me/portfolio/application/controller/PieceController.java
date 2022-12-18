@@ -2,10 +2,7 @@ package me.portfolio.application.controller;
 
 import me.portfolio.application.DAO.PieceDAO;
 import me.portfolio.application.service.*;
-import me.portfolio.library.entity.Board;
-import me.portfolio.library.entity.Game;
-import me.portfolio.library.entity.Piece;
-import me.portfolio.library.entity.User;
+import me.portfolio.library.entity.*;
 import me.portfolio.library.exceptions.EntityNotFoundException;
 import me.portfolio.library.exceptions.InvalidOperationException;
 import me.portfolio.library.service.PieceStrategySelector;
@@ -19,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -39,7 +35,7 @@ public class PieceController {
         this.userService = userService;
     }
 
-    @Logging
+//    @Logging
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePiece(@PathVariable String id, @RequestBody Piece piece, @RequestParam int mode1, @RequestParam int mode2) {
         Piece curPiece = pieceDAO.findById(id).orElseThrow(() -> new EntityNotFoundException(Piece.class, piece.getId()));
@@ -55,7 +51,7 @@ public class PieceController {
                     piece.getRow());
             game = gameService.updateGame(board, curPiece, postPiece);
         } else {
-            List<Piece> performedAction = AIServiceImpl.act(game, mode1, game.getUsers().get(PieceColorEnum.RED).getId().equals(AIServiceImpl.getUser().getId())? PieceColorEnum.BLACK : PieceColorEnum.RED);
+            List<Piece> performedAction = AIServiceImpl.act(game, mode1, game.getUsers().get(PieceColorEnum.RED).getId().equals(AIServiceImpl.getUser().getId()) ? PieceColorEnum.BLACK : PieceColorEnum.RED);
             game = gameService.updateGame(board, performedAction.get(0), performedAction.get(1));
         }
 
@@ -96,7 +92,7 @@ public class PieceController {
                 userService.setUserStatus(user);
             });
         } catch (InvalidOperationException e) {
-            User winner = game.getUsers().get(game.getTotalSteps() % 2 == 1? PieceColorEnum.RED : PieceColorEnum.BLACK);
+            User winner = game.getUsers().get(game.getTotalSteps() % 2 == 1 ? PieceColorEnum.RED : PieceColorEnum.BLACK);
             gameService.endGame(game, winner);
             game.getUsers().values().forEach(user -> {
                 if (user.getStatus() != UserStatusEnum.OFFLINE) {

@@ -5,7 +5,6 @@ import me.portfolio.library.entity.Board;
 import me.portfolio.library.entity.Piece;
 import me.portfolio.library.util.PieceColorEnum;
 import me.portfolio.library.util.PieceTypeEnum;
-import me.portfolio.log.aop.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class PieceServiceImpl implements PieceService {
         this.pieceDAO = pieceDAO;
     }
 
-//    @Logging
+    //    @Logging
     @Override
     public Map<Integer, Piece> initPiece(Board board, PieceTypeEnum type) {
         Map<Integer, Piece> pieceMap = new HashMap<>();

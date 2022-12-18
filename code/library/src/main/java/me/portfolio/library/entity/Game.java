@@ -25,6 +25,7 @@ public class Game {
     private List<Board> boards;
     @Reference(to = User.class)
     private User winner;
+    private Float score;
     @JsonIgnore
     @LastModifiedDate
     private Date lastModifiedDate;
@@ -32,14 +33,24 @@ public class Game {
     @CreatedDate
     private Date createDate;
 
-    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards, User winner) {
+    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards, User winner, Float score) {
         this.id = id;
         this.status = status;
         this.totalSteps = totalSteps;
         this.users = users;
         this.boards = boards;
         this.winner = winner;
+        this.score = score;
     }
+
+//    public Game(String id, GameStatusEnum status, long totalSteps, Map<PieceColorEnum, User> users, List<Board> boards, User winner) {
+//        this.id = id;
+//        this.status = status;
+//        this.totalSteps = totalSteps;
+//        this.users = users;
+//        this.boards = boards;
+//        this.winner = winner;
+//    }
 
     public Game() {
     }
@@ -96,6 +107,14 @@ public class Game {
         this.winner = winner;
     }
 
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
@@ -117,8 +136,11 @@ public class Game {
         return "Game{" +
                 "id='" + id + '\'' +
                 ", status=" + status +
+                ", totalSteps=" + totalSteps +
                 ", users=" + users +
                 ", boards=" + boards +
+                ", winner=" + winner +
+                ", score=" + score +
                 '}';
     }
 }
